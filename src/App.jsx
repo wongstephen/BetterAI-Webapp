@@ -12,16 +12,7 @@ function App() {
   const [images, setImages] = useState([]);
   const [option, setOption] = useState({});
   const [selectedGrid, setSelectedGrid] = useState("q&a");
-  const [results, setResults] = useState([
-    {
-      prompt: "How tall is the Space Needle in Seattle, WA?",
-      res: "The space need is three feet tall",
-    },
-    {
-      prompt: "promp2",
-      res: "res",
-    },
-  ]);
+  const [results, setResults] = useState([]);
 
   const configuration = new Configuration({
     apiKey: import.meta.env.VITE_OPENAI_API_KEY,
