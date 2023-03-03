@@ -19,3 +19,7 @@
 .image-container {
   margin-top: 2rem;
 }
+
+form > textarea {
+  width: 25rem;
+}
