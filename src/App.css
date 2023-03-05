@@ -20,14 +20,10 @@
   margin-top: 2rem;
 }
 
-form > textarea {
-  width: clamp(250px, 40vw, 35rem);
-}
-
 .grid-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .grid-child {
@@ -35,6 +31,7 @@ form > textarea {
   border-radius: 0.5rem;
   padding: 0.8rem;
   cursor: pointer;
+  min-height: 160px;
 }
 
 .grid-child-selected {
@@ -78,4 +75,9 @@ form > textarea {
   border: 0.25px solid whitesmoke;
   padding: 1rem;
   text-align: left;
+}
+
+.text-area {
+  /* max-width: 100%; */
+  width: clamp(250px, 40vw, 100%);
 }

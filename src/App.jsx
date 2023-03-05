@@ -1,5 +1,5 @@
 import "./App.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Configuration, OpenAIApi } from "openai";
 import Options from "./components/Options";
 import Translation from "./components/Translation";
@@ -11,7 +11,7 @@ function App() {
   const textRef = useRef("");
   const [images, setImages] = useState([]);
   const [option, setOption] = useState({});
-  const [selectedGrid, setSelectedGrid] = useState("q&a");
+  const [selectedGrid, setSelectedGrid] = useState("");
   const [results, setResults] = useState([]);
 
   const configuration = new Configuration({
@@ -51,12 +51,25 @@ function App() {
   };
 
   const submitPrompt = async () => {
+    if (!textRef.current.value || Object.keys(option) === 0) {
+      console.error("Select a translation or enter a prompt");
+      return;
+    }
     try {
-      const promptStr = option.prompt + textRef.current.value;
-      console.log({ ...option, prompt: promptStr });
+      const promptStr = option.prompt
+        ? option.prompt + textRef.current.value
+        : textRef.current.value;
+      // const response = "top speed is 140";
+      // console.log({ ...option, prompt: promptStr });
       const openaiOption = { ...option, prompt: promptStr };
       const response = await openai.createCompletion(openaiOption);
-      console.log(response);
+      setResults((prev) => {
+        return [
+          ...prev,
+          { prompt: promptStr, res: response.data.choices[0].text },
+        ];
+      });
+      console.log(response.data.choices[0].text);
     } catch (err) {
       console.log(err);
     }
@@ -65,7 +78,7 @@ function App() {
   return (
     <div className="App">
       <img className="app-logo" src="/assets/better-ai-logo.png"></img>
-      <p>
+      {/* <p>
         Better AI uses artificial intelligence to generate custom images based
         on your prompt.
         <br />
@@ -97,14 +110,19 @@ function App() {
           images.map((url) => {
             return <img src={url} key={url} />;
           })}
-      </div>
+      </div> */}
 
+      <h3>1. To get started, select a prompt. </h3>
       <Options
         arrayItems={arrayItems}
         selOption={selOption}
         setSelectedGrid={setSelectedGrid}
         selectedGrid={selectedGrid}
       />
+      <h3>
+        2. Enter the parameters for your prompt. Then click submit to generate
+        results.
+      </h3>
       <Translation textRef={textRef} submitPrompt={submitPrompt} />
       <Result results={results} />
     </div>

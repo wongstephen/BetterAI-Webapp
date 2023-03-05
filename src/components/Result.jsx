@@ -4,7 +4,7 @@ const Result = ({ results }) => {
   console.log(results);
   return (
     <div>
-      <h3>Results</h3>
+      {results.length > 0 && <h3>Results</h3>}
       {results.map((el) => {
         return (
           <div className="result-container">

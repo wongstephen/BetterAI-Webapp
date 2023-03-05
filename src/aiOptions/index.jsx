@@ -56,4 +56,33 @@ export const arrayItems = [
       presence_penalty: 0.0,
     },
   },
+  {
+    name: "Notes to summary",
+    id: "notesToSummary",
+    description: "Turn meeting notes into a summary.",
+    option: {
+      model: "text-davinci-003",
+      prompt:
+        "Convert my short hand into a first-hand account of the meeting:\n",
+      temperature: 0,
+      max_tokens: 64,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+    },
+  },
+  {
+    name: "Convert movie titles to emoji",
+    id: "movieToEmoji",
+    description: "Turn meeting notes into a summary.",
+    option: {
+      model: "text-davinci-003",
+      prompt: "Convert movie titles into emoji:\n",
+      temperature: 0,
+      max_tokens: 64,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+    },
+  },
 ];
