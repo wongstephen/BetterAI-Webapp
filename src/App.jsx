@@ -9,10 +9,11 @@ import Result from "./components/Result";
 function App() {
   const inputRef = useRef("");
   const textRef = useRef("");
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const [option, setOption] = useState({});
   const [selectedGrid, setSelectedGrid] = useState("");
   const [results, setResults] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const configuration = new Configuration({
     apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -22,27 +23,32 @@ function App() {
 
   const promptInput = document.querySelector(".prompt-input");
 
-  const fetchImg = async () => {
-    if (!inputRef.current.value) {
-      console.error("The prompt is empty");
-      return;
-    }
-    try {
-      console.log("Generating image for " + inputRef.current.value);
-      const res = await openai.createImage({
-        prompt: inputRef.current.value,
-        n: 1,
-        size: "256x256",
-      });
-      const image_url = res.data.data[0].url;
-      setImages((prev) => [...prev, image_url]);
-      inputRef = "";
-    } catch (err) {
-      console.error(err);
-    } finally {
-      promptInput.value = "";
-    }
-  };
+  useEffect(() => {
+    selectedGrid && setIsDisabled(() => false);
+  }, [selectedGrid]);
+
+  // const fetchImg = async () => {
+  //   if (!inputRef.current.value) {
+  //     console.error("The prompt is empty");
+  //     return;
+  //   }
+  //   try {
+  //     console.log("Generating image for " + inputRef.current.value);
+  //     console.log(inputRef.current);
+  //     const res = await openai.createImage({
+  //       prompt: inputRef.current.value,
+  //       n: 1,
+  //       size: "256x256",
+  //     });
+  //     const image_url = res.data.data[0].url;
+  //     setImages((prev) => [...prev, image_url]);
+  //     inputRef = "";
+  //   } catch (err) {
+  //     console.error(err);
+  //   } finally {
+  //     promptInput.value = "";
+  //   }
+  // };
 
   const selOption = (option) => {
     setOption((prev) => {
@@ -55,6 +61,7 @@ function App() {
       console.error("Select a translation or enter a prompt");
       return;
     }
+    setIsDisabled(() => true);
     try {
       const promptStr = option.prompt
         ? option.prompt + textRef.current.value
@@ -72,12 +79,14 @@ function App() {
       console.log(response.data.choices[0].text);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsDisabled(() => false);
     }
   };
 
   return (
     <div className="App">
-      <img className="app-logo" src="/assets/better-ai-logo.png"></img>
+      <img className="app-logo" src="/assets/logo.png"></img>
       {/* <p>
         Better AI uses artificial intelligence to generate custom images based
         on your prompt.
@@ -123,7 +132,11 @@ function App() {
         2. Enter the parameters for your prompt. Then click submit to generate
         results.
       </h3>
-      <Translation textRef={textRef} submitPrompt={submitPrompt} />
+      <Translation
+        textRef={textRef}
+        submitPrompt={submitPrompt}
+        isDisabled={isDisabled}
+      />
       <Result results={results} />
     </div>
   );

@@ -1,13 +1,12 @@
 import React from "react";
 
 const Result = ({ results }) => {
-  console.log(results);
   return (
     <div>
       {results.length > 0 && <h3>Results</h3>}
-      {results.map((el) => {
+      {results.map((el, idx) => {
         return (
-          <div className="result-container">
+          <div className="result-container" key={idx}>
             <div className="result-child">
               <p className="result-prompt">{el.prompt}</p>
             </div>
